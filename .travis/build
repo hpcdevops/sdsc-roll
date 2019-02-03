@@ -19,9 +19,18 @@ su testuser -c '
   set -x
   set -e
 
-  echo "Hello, world"
+  id
+  pwd
   ls -l
-  git --version
-  gcc --version
-  rpm -qa | sort
+'
+
+bash -c '
+  set -x
+  set -e
+
+  id
+  pwd
+  ls -l
+
+  rpm -qa --queryformat '%{NAME}\n' | sort -u
 '
