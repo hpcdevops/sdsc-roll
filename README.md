@@ -1,5 +1,7 @@
 # SDSC "sdsc" roll
 
+[![Build Status](https://travis-ci.org/hpcdevops/sdsc-roll.svg?branch=master)](https://travis-ci.org/hpcdevops/sdsc-roll)
+
 ## Overview
 
 This roll bundles a collection of files required for developing and using
