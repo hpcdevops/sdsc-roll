@@ -1,0 +1,27 @@
+#!/bin/bash -ex
+
+# this script runs as root under docker
+
+# build and install
+yum install -y rpm-build make yum-utils gcc binutils util-linux-ng which
+yum install -y openssl-devel libuuid-devel libseccomp-devel e2fsprogs
+
+yum install -y epel-release
+
+yum install -y sudo git tree
+
+useradd -u 1000 --create-home -s /bin/bash testuser
+echo "Defaults:testuser env_keep=DOCKER_HOST" >>/etc/sudoers
+echo "testuser ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
+chown -R testuser .
+
+su testuser -c '
+  set -x
+  set -e
+
+  echo 'Hello, world'
+  ls -l
+  git --version
+  gcc --version
+  rpm -qa | sort
+'

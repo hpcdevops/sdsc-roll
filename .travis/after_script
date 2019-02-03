@@ -1,0 +1,6 @@
+#!/bin/bash -ex
+
+case $OS_TYPE in
+    centos) upload_roll ;;
+    *) echo "Unknown OS_TYPE $OS_TYPE"; exit 1;;
+esac
