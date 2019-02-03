@@ -1,6 +1,6 @@
 # SDSC "sdsc" roll
 
-[![Build Status](https://travis-ci.org/hpcdevops/sdsc-roll.svg?branch=master)](https://travis-ci.org/hpcdevops/sdsc-roll)
+[![Build Status](https://travis-ci.com/hpcdevops/sdsc-roll.svg?branch=master)](https://travis-ci.com/hpcdevops/sdsc-roll)
 
 ## Overview
 
