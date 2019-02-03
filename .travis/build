@@ -19,7 +19,7 @@ su testuser -c '
   set -x
   set -e
 
-  echo 'Hello, world'
+  echo "Hello, world"
   ls -l
   git --version
   gcc --version
