@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-sep -x
+set -x
 
 travis_fold start "clone_deps"
 travis_time_start
