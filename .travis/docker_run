@@ -15,7 +15,6 @@ if [[ "$OS_TYPE" = "centos" ]] && [[ "$OS_VERSION" = "6" ]]; then
 	--name "$DOCKER_CONTAINER_NAME" \
 	--volume "$(pwd):/build:ro" \
 	--volume "/tmp:/tmp:rw" \
-	--user rocksbuiler \
 	--workdir "/build" \
 	"$DOCKER_HUB_URI" /bin/bash -exc "
 	    cd /build &&
@@ -31,7 +30,6 @@ elif [[ "$OS_TYPE" = "centos" ]] && [[ "$OS_VERSION" = "7" ]]; then
 	--name "$DOCKER_CONTAINER_NAME" \
 	--volume "$(pwd):/build:ro" \
 	--volume "/tmp:/tmp:rw" \
-	--user rocksbuiler \
 	--workdir "/build" \
 	"$DOCKER_HUB_URI" /usr/sbin/init
 	    docker exec -ti "$DOCKER_CONTAINER_NAME" /bin/bash -exc "
@@ -47,7 +45,6 @@ else
 	--name "$DOCKER_CONTAINER_NAME" \
 	--volume "$(pwd):/build:ro" \
 	--volume "/tmp:/tmp:rw" \
-	--user rocksbuiler \
 	--workdir "/build" \
 	"$DOCKER_HUB_URI" /bin/bash -exc "
 	    cd /build &&
