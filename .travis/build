@@ -3,9 +3,6 @@
 set -e
 set -x
 
-travis_fold start "build"
-travis_time_start
-
 # # this script runs as root under docker
 # 
 # # build and install
@@ -75,5 +72,3 @@ done
 
 echo "=-=-=- Build of ${ROLL_TO_BUILD} finished at $(date) -=-=-="
 
-travis_time_finish
-travis_fold end "build"
