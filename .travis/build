@@ -75,5 +75,5 @@ done
 
 echo "=-=-=- Build of ${ROLL_TO_BUILD} finished at $(date) -=-=-="
 
-travis_time_end
+travis_time_finish
 travis_fold end "build"

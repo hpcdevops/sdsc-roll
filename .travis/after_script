@@ -11,5 +11,5 @@ case $OS_TYPE in
     *) echo "Unknown OS_TYPE $OS_TYPE"; exit 1;;
 esac
 
-travis_time_end
+travis_time_finish
 travis_fold end "after_script"

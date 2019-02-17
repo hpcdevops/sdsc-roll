@@ -27,6 +27,6 @@ sleep 5
 DOCKER_HUB_URI="hpcdevops/docker-${OS_TYPE}$OS_VERSION-rocksbuilder"
 sudo docker pull "$DOCKER_HUB_URI"
 
-travis_time_end
+travis_time_finish
 travis_fold end "before_install"
 
