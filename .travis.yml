@@ -27,6 +27,10 @@ services:
   - docker
 
 before_install:
+  - export -f travis_nanoseconds
+  - export -f travis_fold
+  - export -f travis_time_start
+  - export -f travis_time_finish
   - .travis/before_install
 
 before_script:
