@@ -3,14 +3,8 @@
 set -e
 set -x
 
-travis_fold start "upload_roll"
-travis_time_start
-
 case $OS_TYPE in
-    centos) echo 'Do the upload_roll part here...' ;;
+    centos) echo -e '\n\n\n=-=-=- Do the upload_roll part here... -=-=-=\n\n' ;;
     *) echo "Unknown OS_TYPE $OS_TYPE"; exit 1;;
 esac
-
-travis_time_finish
-travis_fold end "upload_roll"
 

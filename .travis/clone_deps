@@ -3,14 +3,8 @@
 set -e
 set -x
 
-travis_fold start "clone_deps"
-travis_time_start
-
 case $OS_TYPE in
-    centos) echo 'Do the clone_deps part here...' ;;
+    centos) echo -e '\n\n\n=-=-=-=- Do the clone_deps part here... -=-=-=\n\n' ;;
     *) echo "Unknown OS_TYPE $OS_TYPE"; exit 1;;
 esac
-
-travis_time_finish
-travis_fold end "clone_deps"
 

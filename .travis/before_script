@@ -3,11 +3,14 @@
 set -e
 set -x
 
-export -f travis_fold
-export -f travis_time_start
-export -f travis_time_finish
+travis_fold start "before_script"
+travis_time_start
 
 case $OS_TYPE in
     centos) .travis/clone_deps ;;
     *) echo "Unknown OS_TYPE $OS_TYPE"; exit 1;;
 esac
+
+travis_time_finish
+travis_fold end "before_script"
+
