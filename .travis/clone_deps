@@ -1,6 +1,16 @@
-#!/bin/bash -ex
+#!/usr/bin/env bash
+
+set -e
+sep -x
+
+travis_fold start "clone_deps"
+travis_time_start
 
 case $OS_TYPE in
     centos) echo 'Do the clone_deps part here...' ;;
     *) echo "Unknown OS_TYPE $OS_TYPE"; exit 1;;
 esac
+
+travis_time_end
+travis_fold end "clone_deps"
+

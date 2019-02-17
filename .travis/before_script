@@ -1,4 +1,11 @@
-#!/bin/bash -ex
+#!/usr/bin/env bash 
+
+set -e
+set -x
+
+export -f travis_fold
+export -f travis_time_start
+export -f travis_time_finish
 
 case $OS_TYPE in
     centos) .travis/clone_deps ;;

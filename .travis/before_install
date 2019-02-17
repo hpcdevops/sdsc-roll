@@ -1,4 +1,14 @@
-#!/bin/bash -ex
+#!/usr/bin/env bash
+
+set -e
+set -x
+
+export -f travis_fold
+export -f travis_time_start
+export -f travis_time_end
+
+travis_fold start "before_install"
+travis_time_start
 
 if [ -z "$OS_TYPE" ]; then
     # default is ubuntu
@@ -18,5 +28,9 @@ echo 'DOCKER_OPTS="-H tcp://127.0.0.1:2375 -H unix:///var/run/docker.sock -s dev
 sudo service docker restart
 sleep 5
 
-DOCKER_HUB_URI="${OS_TYPE}:$OS_VERSION"
+DOCKER_HUB_URI="hpcdevops/docker-${OS_TYPE}$OS_VERSION-rocksbuilder"
 sudo docker pull "$DOCKER_HUB_URI"
+
+travis_time_end
+travis_fold end "before_install"
+
