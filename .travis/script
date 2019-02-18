@@ -1,6 +1,16 @@
-#!/bin/bash -ex
+#!/usr/bin/env bash
+
+set -e
+set -x
+
+travis_fold start "script"
+travis_time_start
 
 case $OS_TYPE in
     centos) .travis/docker_run ;;
     *) echo "Unknown OS_TYPE $OS_TYPE"; exit 1;;
 esac
+
+travis_time_finish
+travis_fold end "script"
+

@@ -1,27 +1,55 @@
-#!/bin/bash -ex
+#!/usr/bin/env bash
 
-# this script runs as root under docker
+set -e
+set -x
 
-# build and install
-yum install -y rpm-build make yum-utils gcc binutils util-linux-ng which
-yum install -y openssl-devel libuuid-devel libseccomp-devel e2fsprogs
+. $HOME/.bash_profile
 
-yum install -y epel-release
+printenv
 
-yum install -y sudo git tree
+ROLL_TO_BUILD=$(awk '/ROLLNAME/ {print $3}' version.mk)
 
-useradd -u 1000 --create-home -s /bin/bash testuser
-echo "Defaults:testuser env_keep=DOCKER_HOST" >>/etc/sudoers
-echo "testuser ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
-chown -R testuser .
+echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll started at $(date) -=-=-="
 
-su testuser -c '
-  set -x
-  set -e
+# Rocks MUST build rolls in a directory at least 3 levels deep from / ...
+BUILD_BASE=/tmp/rocksbuilder
+BUILD_DIR=${BUILD_BASE}/$(pwd)
 
-  echo "Hello, world"
-  ls -l
-  git --version
-  gcc --version
-  rpm -qa | sort
-'
+mkdir -p ${BUILD_DIR}
+
+tar -cf - . | ( cd ${BUILD_DIR} ; tar -xf - )
+cd ${BUILD_DIR}
+
+if [ -f ./bootstrap.sh ] ; then
+    grep -q yum ./bootstrap.sh && \
+        sed -i 's/sudo yum/yum/g;s/yum/sudo yum -y/g;' ./bootstrap.sh
+    chmod +x ./bootstrap.sh
+    ./bootstrap.sh
+    sudo make clean && \
+        sudo rm ${PWD}/_arch
+fi
+
+make default
+
+for f in $(find . -name "*.iso") ; do
+    echo -e "=-=-=- Roll ISO $f Details =-=-=-\n"
+    ls -l $f
+    echo ""
+    isoinfo -R -f -i $f
+done
+
+cd ${BUILD_BASE}
+
+echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll required "\
+    $(du -s --block-size=1k ${BUILD_DIR} | awk '{printf "%'\''d KB\n", $1}')" -=-=-="
+
+cd ${BUILD_DIR}
+
+tar -cf - $(find . -name "*.iso") | ( cd $HOME; tar -xvf - )
+
+cd ${HOME}
+
+ls -ltr
+
+echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll finished at $(date) -=-=-="
+

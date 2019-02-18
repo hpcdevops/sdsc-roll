@@ -1,6 +1,15 @@
-#!/bin/bash -ex
+#!/usr/bin/env bash
+
+set -e
+set -x
+
+travis_fold start "after_script"
+travis_time_start
 
 case $OS_TYPE in
-    centos) upload_roll ;;
+    centos) .travis/upload_roll ;;
     *) echo "Unknown OS_TYPE $OS_TYPE"; exit 1;;
 esac
+
+travis_time_finish
+travis_fold end "after_script"

@@ -1,6 +1,10 @@
-#!/bin/bash -ex
+#!/usr/bin/env bash
+
+set -e
+set -x
 
 case $OS_TYPE in
-    centos) echo 'Do the upload_roll part here...' ;;
+    centos) echo -e '\n\n\n=-=-=- Do the upload_roll part here... -=-=-=\n\n' ;;
     *) echo "Unknown OS_TYPE $OS_TYPE"; exit 1;;
 esac
+
