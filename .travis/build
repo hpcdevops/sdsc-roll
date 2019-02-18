@@ -3,43 +3,20 @@
 set -e
 set -x
 
-# # this script runs as root under docker
-# 
-# # build and install
-# yum install -y rpm-build make yum-utils gcc binutils util-linux-ng which
-# yum install -y openssl-devel libuuid-devel libseccomp-devel e2fsprogs
-# 
-# yum install -y epel-release
-# 
-# yum install -y sudo git tree
-# 
-# useradd -u 1000 --create-home -s /bin/bash testuser
-# echo "Defaults:testuser env_keep=DOCKER_HOST" >>/etc/sudoers
-# echo "testuser ALL=(ALL) NOPASSWD: ALL" >>/etc/sudoers
-# chown -R testuser .
-# 
-# su testuser -c '
-#   set -x
-#   set -e
-# 
-#   echo "Hello, world"
-#   ls -l
-#   git --version
-#   gcc --version
-#   rpm -qa | sort
-# '
-
 . $HOME/.bash_profile
 
 
 ROLL_TO_BUILD=$(awk '/ROLLNAME/ {print $3}' version.mk)
 
-echo "=-=-=- Build of ${ROLL_TO_BUILD} started at $(date) -=-=-="
+echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll started at $(date) -=-=-="
 
-mkdir -p /tmp/$(pwd)
+# Rocks MUST build rolls in a directory at least 3 levels deep from / ...
+BUILD_DIR=/tmp/${USER}/$(pwd)
 
-tar -cf - . | ( cd /tmp/$(pwd) ; tar -xf - )
-cd /tmp/$(pwd)
+mkdir -p ${BUILD_DIR}
+
+tar -cf - . | ( cd ${BUILD_DIR} ; tar -xf - )
+cd ${BUILD_DIR}
 
 if [ -f ./bootstrap.sh ] ; then
     grep -q yum ./bootstrap.sh && \
@@ -59,16 +36,16 @@ for f in $(find . -name "*.iso") ; do
     isoinfo -R -f -i $f
 done
 
-cd ../
+cd /tmp/${USER}
 
-echo "=-=-=- Build of ${ROLL_TO_BUILD} required "\
-    $(du -s --block-size=1k ./build | awk '{printf "%'\''d KB\n", $1}')" -=-=-="
+echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll required "\
+    $(du -s --block-size=1k ${BUILD_DIR} | awk '{printf "%'\''d KB\n", $1}')" -=-=-="
 
-cd ./build
+cd ${BUILD_DIR}
 
 for f in $(find . -name "*.iso"); do
-    mv -v $f ../
+    mv -v $f /build
 done
 
-echo "=-=-=- Build of ${ROLL_TO_BUILD} finished at $(date) -=-=-="
+echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll finished at $(date) -=-=-="
 
