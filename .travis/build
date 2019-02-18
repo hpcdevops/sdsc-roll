@@ -45,9 +45,11 @@ echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll required "\
 
 cd ${BUILD_DIR}
 
-for f in $(find . -name "*.iso"); do
-    mv -v $f /build
-done
+tar -cf - $(find . -name "*.iso") | ( cd $HOME; tar -xvf - )
+
+cd ${HOME}
+
+ls -ltr
 
 echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll finished at $(date) -=-=-="
 
