@@ -7,8 +7,12 @@ jobs:
     steps:
       - checkout
       - run:
-          shell: /bin/bash -l -exc
+          shell: /bin/bash -l
           command: printenv
+      - run: |
+        printenv |
+        grep -v CIRCLE |
+        sort
 
   "build-centos7":
     docker:
@@ -17,8 +21,12 @@ jobs:
     steps:
       - checkout
       - run:
-          shell: /bin/bash -l -exc
+          shell: /bin/bash -l
           command: printenv
+      - run: |
+        printenv |
+        grep -v CIRCLE |
+        sort
 
 workflows:
   version: 2
