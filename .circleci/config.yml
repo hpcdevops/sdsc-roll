@@ -6,7 +6,6 @@ jobs:
     working_directory: /export/rocks/src/roll
     steps:
       - run: mkdir -p /export/rocks/src/roll
-      - run: sudo chown -R rocksbuilder /export/rocks/src/roll
       - run: git --version
       - checkout
       - run: git remote -v
@@ -20,7 +19,7 @@ jobs:
     working_directory: /export/rocks/src/roll
     steps:
       - run: mkdir -p /export/rocks/src/roll
-      - run: sudo chown -R rocksbuilder /export/rocks/src/roll
+      - run: cd /export/rocks/src/roll
       - run: git --version
       - checkout
       - run: git remote -v
