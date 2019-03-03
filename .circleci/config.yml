@@ -5,7 +5,8 @@ jobs:
       - image: hpcdevops/docker-centos6-rocksbuilder
     working_directory: /export/rocks/src/roll
     steps:
-      - run: printenv
+      - run: mkdir -p /export/rocks/src/roll
+      - run: sudo chown -R rocksbuilder /export/rocks/src/roll
       - run: git --version
       - checkout
       - run: git remote -v
@@ -18,7 +19,8 @@ jobs:
       - image: hpcdevops/docker-centos7-rocksbuilder
     working_directory: /export/rocks/src/roll
     steps:
-      - run: printenv
+      - run: mkdir -p /export/rocks/src/roll
+      - run: sudo chown -R rocksbuilder /export/rocks/src/roll
       - run: git --version
       - checkout
       - run: git remote -v
