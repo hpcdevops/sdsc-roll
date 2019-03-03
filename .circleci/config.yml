@@ -9,6 +9,12 @@ jobs:
       - run:
           shell: /bin/bash -l
           command: |
+            echo "Changing direcotry to ${CIRCLE_WORKING_DIRECTORY}..."
+            cd ${CIRCLE_WORKING_DIRECTORY}
+            echo "Currently in $(pwd)..."
+            echo "Non-CIRCLE Environment is..."
+            printenv | grep -v CIRCLE | sort
+            echo "Starting bootstrap and build..."
             ROLL_TO_BUILD=$(awk '/ROLLNAME/ {print $3}' version.mk)
             echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll started at $(date) -=-=-="
             if [ -f ./bootstrap.sh ] ; then
@@ -41,6 +47,12 @@ jobs:
       - run:
           shell: /bin/bash -l
           command: |
+            echo "Changing direcotry to ${CIRCLE_WORKING_DIRECTORY}..."
+            cd ${CIRCLE_WORKING_DIRECTORY}
+            echo "Currently in $(pwd)..."
+            echo "Non-CIRCLE Environment is..."
+            printenv | grep -v CIRCLE | sort
+            echo "Starting bootstrap and build..."
             ROLL_TO_BUILD=$(awk '/ROLLNAME/ {print $3}' version.mk)
             echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll started at $(date) -=-=-="
             if [ -f ./bootstrap.sh ] ; then
