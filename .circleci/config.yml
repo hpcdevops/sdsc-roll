@@ -67,11 +67,11 @@ jobs:
       - checkout
       - run: export ROLLNAME=$(awk '/ROLLNAME/ {print $3}' version.mk)
       - bootstrap:
-        rollname: $ROLLNAME
+          rollname: "$ROLLNAME"
       - make_default:
-        rollname: $ROLLNAME
+          rollname: "$ROLLNAME"
       - verify:
-        rollname: $ROLLNAME
+          rollname: "$ROLLNAME"
 
   "build-centos7":
     docker:
@@ -81,11 +81,11 @@ jobs:
       - checkout
       - run: export ROLLNAME=$(awk '/ROLLNAME/ {print $3}' version.mk)
       - bootstrap:
-        rollname: $ROLLNAME
+          rollname: "$ROLLNAME"
       - make_default:
-        rollname: $ROLLNAME
+          rollname: "$ROLLNAME"
       - verify:
-        rollname: $ROLLNAME
+          rollname: "$ROLLNAME"
 
 workflows:
   version: 2
