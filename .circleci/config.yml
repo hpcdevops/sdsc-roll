@@ -3,32 +3,30 @@ jobs:
   "build-centos6":
     docker:
       - image: hpcdevops/docker-centos6-rocksbuilder
-
+    working_directory: ~/
     steps:
+      - run: printenv
+      - run: git --version
+      - run: git checkout --help
       - checkout
-
-      - run:
-          name: Greeting
-          command: echo Hello, world.
-
-      - run:
-          name: Print the Current Time
-          command: date
+      - run: git remote -v
+      - run: git branch -a
+      - run: git status
+      - run: git log -n 1
 
   "build-centos7":
     docker:
       - image: hpcdevops/docker-centos7-rocksbuilder
-
+    working_directory: ~/
     steps:
+      - run: printenv
+      - run: git --version
+      - run: git checkout --help
       - checkout
-
-      - run:
-          name: Greeting
-          command: echo Hello, world.
-
-      - run:
-          name: Print the Current Time
-          command: date
+      - run: git remote -v
+      - run: git branch -a
+      - run: git status
+      - run: git log -n 1
 
 workflows:
   version: 2
