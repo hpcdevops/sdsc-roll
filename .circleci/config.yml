@@ -83,7 +83,6 @@ jobs:
       - verify
 
 workflows:
-  version: 2
   build:
     jobs:
       - "build-centos6"
