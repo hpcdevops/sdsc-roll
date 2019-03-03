@@ -1,8 +1,23 @@
 version: 2
 jobs:
-  build:
+  build-centos6:
     docker:
-      - image: debian:stretch
+      - image: hpcdevops/docker-centos6-rocksbuilder
+
+    steps:
+      - checkout
+
+      - run:
+          name: Greeting
+          command: echo Hello, world.
+
+      - run:
+          name: Print the Current Time
+          command: date
+
+  build-centos7:
+    docker:
+      - image: hpcdevops/docker-centos7-rocksbuilder
 
     steps:
       - checkout
