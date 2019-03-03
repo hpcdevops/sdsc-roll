@@ -1,6 +1,7 @@
 # SDSC "sdsc" roll
 
 [![Build Status](https://travis-ci.com/hpcdevops/sdsc-roll.svg?branch=master)](https://travis-ci.com/hpcdevops/sdsc-roll)
+[![CircleCI](https://circleci.com/gh/hpcdevops/sdsc-roll/tree/master.svg?style=svg)](https://circleci.com/gh/hpcdevops/sdsc-roll/tree/master)
 
 ## Overview
 
