@@ -13,7 +13,7 @@ commands:
           name: Bootstrap Build Environment
           shell: /bin/bash -l
           command: |
-            echo "=-=-=- Build of "<< parameters.rollname >>"-roll started at $(date) -=-=-="
+            echo -e "\n=-=-=- Build of "<< parameters.rollname >>"-roll started at $(date) -=-=-="
             if [ -f ./bootstrap.sh ] ; then
               grep -q yum ./bootstrap.sh && sed -i 's/sudo yum/yum/g;s/yum/sudo yum -y/g;' ./bootstrap.sh
               chmod +x ./bootstrap.sh
@@ -27,7 +27,7 @@ commands:
       rollname:
         description: The name of the roll to build
         type: string
-        default: sdsc-roll
+        default: sdsc
     steps:
       - run:
           name: Build Roll ISO
@@ -41,7 +41,7 @@ commands:
       rollname:
         description: The name of the roll to build
         type: string
-        default: sdsc-roll
+        default: sdsc
     steps:
       - run:
           name: Verify Roll ISO
@@ -49,18 +49,18 @@ commands:
           command: |
             BUILD_DIR=$(pwd)
             for f in $(find . -name "*.iso") ; do
-              echo -e "=-=-=- Roll ISO $f Details =-=-=-\n"
+              echo -e "\n=-=-=- Roll ISO $f Details =-=-=-"
               ls -l $f
               echo ""
               isoinfo -R -f -i $f
             done
             cd ~
-            echo "=-=-=- Build of "<< parameters.rollname >>"-roll required "$(du -s --block-size=1k ${BUILD_DIR} | awk '{printf "%'\''d KB\n", $1}')" -=-=-="
+            echo -e "\n=-=-=- Build of "<< parameters.rollname >>"-roll required "$(du -s --block-size=1k ${BUILD_DIR} | awk '{printf "%'\''d KB\n", $1}')" -=-=-="
             cd $BUILD_DIR
             tar -cf - $(find . -name "*.iso") | ( cd $HOME; tar -xvf - )
             cd ~
             ls -ltr
-            echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll finished at $(date) -=-=-="
+            echo -e "\n=-=-=- Build of "<< parameters.rollname >>"-roll finished at $(date) -=-=-="
 
 jobs:
   "build-centos6":
