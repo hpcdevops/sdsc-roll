@@ -9,10 +9,7 @@ jobs:
       - run:
           shell: /bin/bash -l
           command: printenv
-      - run: |
-        printenv |
-        grep -v CIRCLE |
-        sort
+      - run: printenv | grep -v CIRCLE | sort
 
   "build-centos7":
     docker:
@@ -23,10 +20,7 @@ jobs:
       - run:
           shell: /bin/bash -l
           command: printenv
-      - run: |
-        printenv |
-        grep -v CIRCLE |
-        sort
+      - run: printenv | grep -v CIRCLE | sort
 
 workflows:
   version: 2
