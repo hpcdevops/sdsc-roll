@@ -65,13 +65,9 @@ jobs:
         user: rocksbuilder
     steps:
       - checkout
-      - run: export ROLLNAME=$(awk '/ROLLNAME/ {print $3}' version.mk)
-      - bootstrap:
-          rollname: "$ROLLNAME"
-      - make_default:
-          rollname: "$ROLLNAME"
-      - verify:
-          rollname: "$ROLLNAME"
+      - bootstrap
+      - make_default
+      - verify
 
   "build-centos7":
     docker:
@@ -79,13 +75,9 @@ jobs:
         user: rocksbuilder
     steps:
       - checkout
-      - run: export ROLLNAME=$(awk '/ROLLNAME/ {print $3}' version.mk)
-      - bootstrap:
-          rollname: "$ROLLNAME"
-      - make_default:
-          rollname: "$ROLLNAME"
-      - verify:
-          rollname: "$ROLLNAME"
+      - bootstrap
+      - make_default
+      - verify
 
 workflows:
   version: 2
