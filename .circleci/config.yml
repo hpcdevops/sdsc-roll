@@ -1,24 +1,49 @@
 version: 2
-jobs:
-  "build-centos6":
-    docker:
-      - image: hpcdevops/docker-centos6-rocksbuilder
-        user: rocksbuilder
+commands:
+  bootstrap:
+    description: "Run the bootstrap.sh script if it exists"
+    parameters:
+      rollname:
+        description: the name of the roll to build
+        type: string
+        default: sdsc
     steps:
-      - checkout
       - run:
           shell: /bin/bash -l
           command: |
-            BUILD_DIR=$(pwd)
-            ROLL_TO_BUILD=$(awk '/ROLLNAME/ {print $3}' version.mk)
-            echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll started at $(date) -=-=-="
+            echo "=-=-=- Build of "<< rollname >>"-roll started at $(date) -=-=-="
             if [ -f ./bootstrap.sh ] ; then
               grep -q yum ./bootstrap.sh && sed -i 's/sudo yum/yum/g;s/yum/sudo yum -y/g;' ./bootstrap.sh
               chmod +x ./bootstrap.sh
               ./bootstrap.sh
-              sudo make clean && sudo rm ${PWD}/_arch
+              sudo make clean && sudo rm ./_arch
             fi
-            ROLLNAME=$ROLL_TO_BUILD make default
+
+  make_default:
+    description: "Build the default target of the Makefile"
+    parameters:
+      rollname:
+        description: the name of the roll to build
+        type: string
+        default: sdsc-roll
+    steps:
+      - run:
+          shell: /bin/bash -l
+          command: |
+            ROLLNAME=<< rollname >> make default
+  
+  verify:
+    description: "Check the resulting output"
+    parameters:
+      rollname:
+        description: the name of the roll to build
+        type: string
+        default: sdsc-roll
+    steps:
+      - run:
+          shell: /bin/bash -l
+          command: |
+            BUILD_DIR=$(pwd)
             for f in $(find . -name "*.iso") ; do
               echo -e "=-=-=- Roll ISO $f Details =-=-=-\n"
               ls -l $f
@@ -33,38 +58,34 @@ jobs:
             ls -ltr
             echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll finished at $(date) -=-=-="
 
+jobs:
+  "build-centos6":
+    docker:
+      - image: hpcdevops/docker-centos6-rocksbuilder
+        user: rocksbuilder
+    steps:
+      - checkout
+      - run: export ROLLNAME=$(awk '/ROLLNAME/ {print $3}' version.mk)
+      - bootstrap:
+        rollname: $ROLLNAME
+      - make_default:
+        rollname: $ROLLNAME
+      - verify:
+        rollname: $ROLLNAME
+
   "build-centos7":
     docker:
       - image: hpcdevops/docker-centos7-rocksbuilder
         user: rocksbuilder
     steps:
       - checkout
-      - run:
-          shell: /bin/bash -l
-          command: |
-            BUILD_DIR=$(pwd)
-            ROLL_TO_BUILD=$(awk '/ROLLNAME/ {print $3}' version.mk)
-            echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll started at $(date) -=-=-="
-            if [ -f ./bootstrap.sh ] ; then
-              grep -q yum ./bootstrap.sh && sed -i 's/sudo yum/yum/g;s/yum/sudo yum -y/g;' ./bootstrap.sh
-              chmod +x ./bootstrap.sh
-              ./bootstrap.sh
-              sudo make clean && sudo rm ${PWD}/_arch
-            fi
-            ROLLNAME=$ROLL_TO_BUILD make default
-            for f in $(find . -name "*.iso") ; do
-              echo -e "=-=-=- Roll ISO $f Details =-=-=-\n"
-              ls -l $f
-              echo ""
-              isoinfo -R -f -i $f
-            done
-            cd ~
-            echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll required "$(du -s --block-size=1k ${BUILD_DIR} | awk '{printf "%'\''d KB\n", $1}')" -=-=-="
-            cd $BUILD_DIR
-            tar -cf - $(find . -name "*.iso") | ( cd $HOME; tar -xvf - )
-            cd ~
-            ls -ltr
-            echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll finished at $(date) -=-=-="
+      - run: export ROLLNAME=$(awk '/ROLLNAME/ {print $3}' version.mk)
+      - bootstrap:
+        rollname: $ROLLNAME
+      - make_default:
+        rollname: $ROLLNAME
+      - verify:
+        rollname: $ROLLNAME
 
 workflows:
   version: 2
