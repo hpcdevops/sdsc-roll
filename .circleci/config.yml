@@ -5,9 +5,7 @@ jobs:
       - image: hpcdevops/docker-centos6-rocksbuilder
     working_directory: ~/
     steps:
-      - run: printenv
       - run: git --version
-      - run: git checkout --help
       - checkout
       - run: git remote -v
       - run: git branch -a
@@ -21,7 +19,6 @@ jobs:
     steps:
       - run: printenv
       - run: git --version
-      - run: git checkout --help
       - checkout
       - run: git remote -v
       - run: git branch -a
