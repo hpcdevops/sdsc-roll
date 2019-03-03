@@ -4,12 +4,13 @@ jobs:
     docker:
       - image: hpcdevops/docker-centos6-rocksbuilder
         user: rocksbuilder
-    working_directory: ~/${CIRCLE_PROJECT_REPONAME}
     steps:
       - checkout
       - run:
           shell: /bin/bash -l
           command: |
+            BUILD_DIR=~/$CIRCLE_PROJECT_REPONAME
+            cd $BUILD_DIR
             echo "Currently in $(pwd)..."
             echo "CIRCLE Environment is..."
             printenv | grep CIRCLE | sort
@@ -31,11 +32,11 @@ jobs:
               echo ""
               isoinfo -R -f -i $f
             done
-            cd ${CIRCLE_WORKING_DIRECTORY}
+            cd $BUILD_DIR
             echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll required "$(du -s --block-size=1k ${BUILD_DIR} | awk '{printf "%'\''d KB\n", $1}')" -=-=-="
-            cd ${CIRCLE_WORKING_DIRECTORY}
+            cd $BUILD_DIR
             tar -cf - $(find . -name "*.iso") | ( cd $HOME; tar -xvf - )
-            cd ${HOME}
+            cd ~
             ls -ltr
             echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll finished at $(date) -=-=-="
 
@@ -43,12 +44,13 @@ jobs:
     docker:
       - image: hpcdevops/docker-centos7-rocksbuilder
         user: rocksbuilder
-    working_directory: ~/${CIRCLE_PROJECT_REPONAME}
     steps:
       - checkout
       - run:
           shell: /bin/bash -l
           command: |
+            BUILD_DIR=~/$CIRCLE_PROJECT_REPONAME
+            cd $BUILD_DIR
             echo "Currently in $(pwd)..."
             echo "CIRCLE Environment is..."
             printenv | grep CIRCLE | sort
@@ -70,11 +72,11 @@ jobs:
               echo ""
               isoinfo -R -f -i $f
             done
-            cd ${CIRCLE_WORKING_DIRECTORY}
+            cd $BUILD_DIR
             echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll required "$(du -s --block-size=1k ${BUILD_DIR} | awk '{printf "%'\''d KB\n", $1}')" -=-=-="
-            cd ${CIRCLE_WORKING_DIRECTORY}
+            cd $BUILD_DIR
             tar -cf - $(find . -name "*.iso") | ( cd $HOME; tar -xvf - )
-            cd ${HOME}
+            cd ~
             ls -ltr
             echo "=-=-=- Build of ${ROLL_TO_BUILD}-roll finished at $(date) -=-=-="
 
