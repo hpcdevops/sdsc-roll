@@ -3,8 +3,9 @@ jobs:
   "build-centos6":
     docker:
       - image: hpcdevops/docker-centos6-rocksbuilder
-    working_directory: ~/
+    working_directory: /export/rocks/src/roll
     steps:
+      - run: printenv
       - run: git --version
       - checkout
       - run: git remote -v
@@ -15,7 +16,7 @@ jobs:
   "build-centos7":
     docker:
       - image: hpcdevops/docker-centos7-rocksbuilder
-    working_directory: ~/
+    working_directory: /export/rocks/src/roll
     steps:
       - run: printenv
       - run: git --version
